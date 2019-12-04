@@ -6,7 +6,7 @@ def check(data):
     print("The 100 * noun * verb is {}".format(res))
 
 def load_data():
-  with open('input.txt') as f:
+  with open('day2/input.txt') as f:
     file_read = f.read().split(',')
   return map(int, file_read)
 
