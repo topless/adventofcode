@@ -1,11 +1,12 @@
 import { readFileSync } from "fs";
 
+// Theser are the mappings to the play numbers
 // ["rock", "paper", "scissors"]
 
 const opponent = ["A", "B", "C"];
 const mine = ["X", "Y", "Z"];
 
-const roundScore = {
+const resultScore = {
   lost: 0,
   draw: 3,
   win: 6,
@@ -13,26 +14,53 @@ const roundScore = {
 
 const file = readFileSync("./day-02/input.txt", "utf-8");
 const lines = file.split("\n");
-let total = 0;
 
-for (let line of lines) {
-  const [oppMove, myMove] = line.split(" ");
-  const oppPlay = opponent.indexOf(oppMove);
-  const myPlay = mine.indexOf(myMove);
+let total1 = 0;
+let total2 = 0;
 
+const part1 = (myPlay, oppPlay) => {
   if (myPlay === oppPlay) {
-    total += myPlay + 1 + roundScore.draw;
-    continue;
+    total1 += myPlay + 1 + resultScore.draw;
+    return;
   }
 
   if (myPlay - 1 === oppPlay || (myPlay === 0 && oppPlay === 2)) {
-    total += myPlay + 1 + roundScore.win;
-    continue;
+    total1 += myPlay + 1 + resultScore.win;
+    return;
   }
 
   if (myPlay + 1 === oppPlay || (myPlay === 2 && oppPlay === 0)) {
-    total += myPlay + 1;
+    total1 += myPlay + 1;
   }
+};
+
+const part2 = (oppPlay, result) => {
+  if (result === 0) {
+    const myPlay = oppPlay === 0 ? 2 : oppPlay - 1;
+    total2 += myPlay + 1;
+    return;
+  }
+
+  if (result === 1) {
+    total2 += oppPlay + 1 + resultScore.draw;
+    return;
+  }
+
+  if (result === 2) {
+    const myPlay = oppPlay === 2 ? 0 : oppPlay + 1;
+
+    total2 += myPlay + 1 + resultScore.win;
+    return;
+  }
+};
+
+for (let line of lines) {
+  const [firstInput, secInput] = line.split(" ");
+  const oppPlay = opponent.indexOf(firstInput);
+  const myPlay = mine.indexOf(secInput);
+
+  // part1(oppPlay, myPlay);
+  part2(oppPlay, myPlay);
 }
 
-console.log(total);
+console.log(total2);
